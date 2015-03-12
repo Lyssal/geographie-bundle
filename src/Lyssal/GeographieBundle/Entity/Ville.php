@@ -1,0 +1,363 @@
+<?php
+namespace Lyssal\GeographieBundle\Entity;
+
+use Sonata\TranslationBundle\Model\Gedmo\AbstractPersonalTranslatable;
+use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
+
+/**
+ * Ville.
+ * 
+ * @author Rémi Leclerc <rleclerc@Lyssal.com>
+ * @ORM\MappedSuperclass
+ */
+abstract class Ville extends AbstractPersonalTranslatable implements TranslatableInterface
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ville_id", type="integer", nullable=false, options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_nom", type="string", nullable=false, length=128)
+     * @Assert\NotBlank
+     */
+    private $nom;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="ville_slug", length=128, unique=true)
+     * @Gedmo\Slug(fields={"nom"}, style="camel", separator="_", updatable=true)
+     */
+    protected $slug;
+    
+    /**
+     * @var \Lyssal\GeographieBundle\Entity\Departement
+     * 
+     * @ORM\ManyToOne(targetEntity="Departement", inversedBy="villes")
+     * @ORM\JoinColumn(name="departement_id", referencedColumnName="departement_id", nullable=false, onDelete="CASCADE")
+     */
+    protected $departement;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_code_postal", type="string", nullable=false, length=5)
+     * @Assert\NotBlank
+     */
+    private $codePostal;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_code_commune", type="string", nullable=false, length=5)
+     * @Assert\NotBlank
+     */
+    private $codeCommune;
+    
+    /**
+     * @var number
+     *
+     * @ORM\Column(name="ville_latitude", type="decimal", nullable=true, precision=10, scale=8)
+     */
+    private $latitude;
+    
+    /**
+     * @var number
+     *
+     * @ORM\Column(name="ville_longitude", type="decimal", nullable=true, precision=10, scale=8)
+     */
+    private $longitude;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_description", type="string", nullable=true, length=255)
+     * @Gedmo\Translatable
+     */
+    private $description;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_site_web", type="string", nullable=true, length=128)
+     */
+    private $siteWeb;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_gentile", type="string", nullable=true, length=32)
+     */
+    private $gentile;
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Locale
+     */
+    protected $locale;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Ville
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Ville
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+    
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+    
+    /**
+     * Set departement
+     *
+     * @param \Lyssal\GeographieBundle\Entity\Departement $departement
+     * @return Ville
+     */
+    public function setDepartement(\Lyssal\GeographieBundle\Entity\Departement $departement)
+    {
+        $this->departement = $departement;
+
+        return $this;
+    }
+
+    /**
+     * Get departement
+     *
+     * @return \Lyssal\GeographieBundle\Entity\Departement 
+     */
+    public function getDepartement()
+    {
+        return $this->departement;
+    }
+
+    /**
+     * Set codePostal
+     *
+     * @param string $codePostal
+     * @return Ville
+     */
+    public function setCodePostal($codePostal)
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    /**
+     * Get codePostal
+     *
+     * @return string 
+     */
+    public function getCodePostal()
+    {
+        return $this->codePostal;
+    }
+
+    /**
+     * Set codeCommune
+     *
+     * @param string $codeCommune
+     * @return Ville
+     */
+    public function setCodeCommune($codeCommune)
+    {
+        $this->codeCommune = $codeCommune;
+
+        return $this;
+    }
+
+    /**
+     * Get codeCommune
+     *
+     * @return string 
+     */
+    public function getCodeCommune()
+    {
+        return $this->codeCommune;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     * @return Ville
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     * @return Ville
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Ville
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set siteWeb
+     *
+     * @param string $siteWeb
+     * @return Ville
+     */
+    public function setSiteWeb($siteWeb)
+    {
+        $this->siteWeb = $siteWeb;
+
+        return $this;
+    }
+
+    /**
+     * Get siteWeb
+     *
+     * @return string 
+     */
+    public function getSiteWeb()
+    {
+        return $this->siteWeb;
+    }
+
+    /**
+     * Set gentile
+     *
+     * @param string $gentile
+     * @return Ville
+     */
+    public function setGentile($gentile)
+    {
+        $this->gentile = $gentile;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get gentile
+     *
+     * @return string 
+     */
+    public function getGentile()
+    {
+        return $this->gentile;
+    }
+    
+    
+    /**
+     * ToString.
+     *
+     * @return string Nom de la ville
+     */
+    public function __toString()
+    {
+        return $this->getNom();
+    }
+}

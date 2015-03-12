@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="lyssal.geographie.manager.departement.class">Lyssal\GeographieBundle\Manager\DepartementManager</parameter>
+        <parameter key="lyssal.geographie.manager.pays.class">Lyssal\GeographieBundle\Manager\PaysManager</parameter>
+        <parameter key="lyssal.geographie.manager.region.class">Lyssal\GeographieBundle\Manager\RegionManager</parameter>
+        <parameter key="lyssal.geographie.manager.ville.class">Lyssal\GeographieBundle\Manager\VilleManager</parameter>
+    </parameters>
+
+    <services>
+        <service id="lyssal.geographie.manager.departement" class="%lyssal.geographie.manager.departement.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lyssal.geographie.entity.departement.class%</argument>
+        </service>
+        <service id="lyssal.geographie.manager.pays" class="%lyssal.geographie.manager.pays.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lyssal.geographie.entity.pays.class%</argument>
+        </service>
+        <service id="lyssal.geographie.manager.region" class="%lyssal.geographie.manager.region.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lyssal.geographie.entity.region.class%</argument>
+        </service>
+        <service id="lyssal.geographie.manager.ville" class="%lyssal.geographie.manager.ville.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lyssal.geographie.entity.ville.class%</argument>
+        </service>
+    </services>
+
+</container>
