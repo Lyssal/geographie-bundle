@@ -3,18 +3,53 @@ namespace Lyssal\GeographieBundle\Command\Database;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Lyssal\Csv;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use LaVendee\GeographieBundle\Entity\Pays;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Config\FileLocatorInterface;
+use Lyssal\GeographieBundle\Manager\PaysManager;
+use Lyssal\GeographieBundle\Manager\RegionManager;
+use Lyssal\GeographieBundle\Manager\DepartementManager;
+use Lyssal\GeographieBundle\Manager\VilleManager;
 
 /**
  * Commande pour remplir la base de données.
  * 
  * @author Rémi Leclerc
  */
-class UpdateCommand extends ContainerAwareCommand
+class UpdateCommand extends Command
 {
+    /**
+     * @var \Symfony\Bridge\Doctrine\RegistryInterface Doctrine
+     */
+    private $doctrine;
+
+    /**
+     * @var \Symfony\Component\Config\FileLocatorInterface FileLocator
+     */
+    private $fileLocator;
+
+    /**
+     * @var \Lyssal\GeographieBundle\Manager\PaysManager PaysManager
+     */
+    private $paysManager;
+
+    /**
+     * @var \Lyssal\GeographieBundle\Manager\RegionManager RegionManager
+     */
+    private $regionManager;
+
+    /**
+     * @var \Lyssal\GeographieBundle\Manager\DepartementManager DepartementManager
+     */
+    private $departementManager;
+
+    /**
+     * @var \Lyssal\GeographieBundle\Manager\VilleManager VilleManager
+     */
+    private $villeManager;
+    
     /**
      * @var string Chemin vers le dossier de fichiers de LyssalGeographieBundle
      */
@@ -52,6 +87,28 @@ class UpdateCommand extends ContainerAwareCommand
     );
     
     /**
+     * Constructeur
+     * 
+     * @param \Symfony\Bridge\Doctrine\RegistryInterface Doctrine $doctrine
+     * @param \Symfony\Component\Config\FileLocatorInterface FileLocator $fileLocator
+     * @param \Lyssal\GeographieBundle\Manager\PaysManager PaysManager $paysManager
+     * @param \Lyssal\GeographieBundle\Manager\RegionManager RegionManager $regionManager
+     * @param \Lyssal\GeographieBundle\Manager\DepartementManager DepartementManager $departementManager
+     * @param \Lyssal\GeographieBundle\Manager\VilleManager VilleManager $villeManager
+     */
+    public function __construct(RegistryInterface $doctrine, FileLocatorInterface $fileLocator, PaysManager $paysManager, RegionManager $regionManager, DepartementManager $departementManager, VilleManager $villeManager)
+    {
+        $this->doctrine = $doctrine;
+        $this->fileLocator = $fileLocator;
+        $this->paysManager = $paysManager;
+        $this->regionManager = $regionManager;
+        $this->departementManager = $departementManager;
+        $this->villeManager = $villeManager;
+        
+        parent::__construct();
+    }
+    
+    /**
      * (non-PHPdoc)
      * @see \Symfony\Component\Console\Command\Command::configure()
      */
@@ -65,20 +122,11 @@ class UpdateCommand extends ContainerAwareCommand
 
     /**
      * (non-PHPdoc)
-     * @see \Symfony\Component\DependencyInjection\ContainerAwareInterface::setContainer()
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * (non-PHPdoc)
      * @see \Symfony\Component\Console\Command\Command::execute()
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->container->get('doctrine')->getConnection()->getConfiguration()->setSQLLogger(null);
+        $this->doctrine->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->initCheminLyssalGeographieBundleFiles();
         
         $this->importePays();
@@ -91,7 +139,7 @@ class UpdateCommand extends ContainerAwareCommand
      */
     private function initCheminLyssalGeographieBundleFiles()
     {
-        foreach ($this->container->get('file_locator')->locate('@LyssalGeographieBundle', null, false) as $cheminGeographieBundle)
+        foreach ($this->fileLocator->locate('@LyssalGeographieBundle', null, false) as $cheminGeographieBundle)
         {
             if (false !== strpos($cheminGeographieBundle, 'src/Lyssal/GeographieBundle'))
             {
@@ -109,10 +157,10 @@ class UpdateCommand extends ContainerAwareCommand
         $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.'/csv/pays.csv', ',', '"');
         $fichierCsv->importe(false);
     
-        $this->container->get('lyssal.geographie.manager.pays')->removeAll(true);
-        $this->container->get('lyssal.geographie.manager.region')->initAutoIncrement();
-        $this->container->get('lyssal.geographie.manager.departement')->initAutoIncrement();
-        $this->container->get('lyssal.geographie.manager.ville')->initAutoIncrement();
+        $this->paysManager->removeAll(true);
+        $this->regionManager->initAutoIncrement();
+        $this->departementManager->initAutoIncrement();
+        $this->villeManager->initAutoIncrement();
     
         foreach ($fichierCsv->getLignes() as $ligneCsv)
         {
@@ -121,7 +169,7 @@ class UpdateCommand extends ContainerAwareCommand
             $nomFr = $ligneCsv[4];
             $nomEn = $ligneCsv[5];
     
-            $pays = $this->container->get('lyssal.geographie.manager.pays')->create();
+            $pays = $this->paysManager->create();
     
             $pays->setCodeAlpha2($codeAlpha2);
             $pays->setCodeAlpha3($codeAlpha3);
@@ -129,12 +177,12 @@ class UpdateCommand extends ContainerAwareCommand
             $pays->setNom($nomFr);
             $pays->setLocale('fr');
     
-            $this->container->get('lyssal.geographie.manager.pays')->save($pays);
+            $this->paysManager->save($pays);
     
             $pays->setNom($nomEn);
             $pays->setLocale('en');
     
-            $this->container->get('lyssal.geographie.manager.pays')->save($pays);
+            $this->paysManager->save($pays);
             
             if ('FRA' === $codeAlpha3)
             {
@@ -152,13 +200,13 @@ class UpdateCommand extends ContainerAwareCommand
     {
         foreach (array_keys(self::$regionsFr) as $regionNom)
         {
-            $region = $this->container->get('lyssal.geographie.manager.region')->create();
+            $region = $this->regionManager->create();
         
             $region->setNom($regionNom);
             $region->setLocale('fr');
             $region->setPays($paysFrance);
         
-            $this->container->get('lyssal.geographie.manager.region')->save($region);
+            $this->regionManager->save($region);
         }
     }
 
@@ -175,7 +223,7 @@ class UpdateCommand extends ContainerAwareCommand
             $code = strtoupper($ligneCsv[1]);
             $nomFr = $ligneCsv[2];
         
-            $departement = $this->container->get('lyssal.geographie.manager.departement')->create();
+            $departement = $this->departementManager->create();
         
             $departement->setCode($code);
             $departement->setRegion($this->getRegionFranceByDepartement($code, $paysFrance));
@@ -183,7 +231,7 @@ class UpdateCommand extends ContainerAwareCommand
             $departement->setNom($nomFr);
             $departement->setLocale('fr');
         
-            $this->container->get('lyssal.geographie.manager.departement')->save($departement);
+            $this->departementManager->save($departement);
         }
     }
     
@@ -213,7 +261,7 @@ class UpdateCommand extends ContainerAwareCommand
         if (null === $nomRegion)
             throw new \Exception('Région de France non trouvée pour le code département "'.$departementCode.'".');
         
-        return $this->container->get('lyssal.geographie.manager.region')->findOneBy(array('nom' => $nomRegion, 'pays' => $paysFrance));
+        return $this->regionManager->findOneBy(array('nom' => $nomRegion, 'pays' => $paysFrance));
     }
 
     /**
@@ -222,7 +270,7 @@ class UpdateCommand extends ContainerAwareCommand
     private function importeFranceVilles($paysFrance)
     {
         $departementsByCode = array();
-        foreach ($this->container->get('lyssal.geographie.manager.departement')->findByPays($paysFrance) as $departement)
+        foreach ($this->departementManager->findByPays($paysFrance) as $departement)
             $departementsByCode[$departement->getCode()] = $departement;
         
         $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.'/csv/villes-france.csv', ',', '"');
@@ -245,7 +293,7 @@ class UpdateCommand extends ContainerAwareCommand
                 $latitude = floatval($ligneCsv[19]);
                 $longitude = floatval($ligneCsv[20]);
                 
-                $ville = $this->container->get('lyssal.geographie.manager.ville')->create();
+                $ville = $this->villeManager->create();
                 $ville->setDepartement($departement);
                 $ville->setCodePostal($codePostal);
                 $ville->setCodeCommune($codeCommune);
@@ -255,20 +303,20 @@ class UpdateCommand extends ContainerAwareCommand
                 $ville->setNom($nomFr);
                 $ville->setLocale('fr');
                 
-                $this->container->get('lyssal.geographie.manager.ville')->persist($ville);
+                $this->villeManager->persist($ville);
                 
                 if (++$compteur % 100 == 0)
                 {
-                    $this->container->get('lyssal.geographie.manager.ville')->flush();
-                    $this->container->get('lyssal.geographie.manager.ville')->clear();
+                    $this->villeManager->flush();
+                    $this->villeManager->clear();
                 }
             }
         }
         
         if (++$compteur % 100 == 0)
         {
-            $this->container->get('lyssal.geographie.manager.ville')->flush();
-            $this->container->get('lyssal.geographie.manager.ville')->clear();
+            $this->villeManager->flush();
+            $this->villeManager->clear();
         }
     }
 }
