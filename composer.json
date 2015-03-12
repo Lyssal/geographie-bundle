@@ -5,8 +5,8 @@
 	"keywords" : [
 		"geographie",
 		"ville",
-		"département",
-		"région",
+		"departement",
+		"region",
 		"pays"
 	],
 	"type" : "symfony-bundle",
