@@ -13,5 +13,17 @@
         <parameter key="lyssal.geographie.entity.region.class">Lyssal\GeographieBundle\Entity\Region</parameter>
         <parameter key="lyssal.geographie.entity.pays.class">Lyssal\GeographieBundle\Entity\Pays</parameter>
     </parameters>
+    
+    <services>
+    	<service id="lyssal.geographie.command.database.update" class="Lyssal\GeographieBundle\Command\Database\UpdateCommand">
+    		<argument type="service" id="doctrine" />
+    		<argument type="service" id="file_locator" />
+    		<argument type="service" id="lyssal.geographie.manager.pays" />
+    		<argument type="service" id="lyssal.geographie.manager.region" />
+    		<argument type="service" id="lyssal.geographie.manager.departement" />
+    		<argument type="service" id="lyssal.geographie.manager.ville" />
+            <tag name="console.command" />
+        </service>
+    </services>
 
 </container>
