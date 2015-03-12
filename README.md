@@ -2,6 +2,9 @@
 
 LyssalGeographieBundle permet la manipulation de différentes données géographiques.
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/ee28a3ce-401b-4b08-9f4e-71f5d738da10/small.png)](https://insight.sensiolabs.com/projects/ee28a3ce-401b-4b08-9f4e-71f5d738da10)
+
+
 ## Entités
 
 Toutes les entités possèdent leur manager et leur gestion administrative (optionnelle) si vous utilisez Sonata.
