@@ -290,8 +290,8 @@ class UpdateCommand extends Command
                 $nomFr = $ligneCsv[5];
                 $codePostal = $ligneCsv[8];
                 $codeCommune = $ligneCsv[10];
-                $latitude = floatval($ligneCsv[19]);
-                $longitude = floatval($ligneCsv[20]);
+                $longitude = floatval($ligneCsv[19]);
+                $latitude = floatval($ligneCsv[20]);
                 
                 $ville = $this->villeManager->create();
                 $ville->setDepartement($departement);
