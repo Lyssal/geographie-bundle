@@ -1,7 +1,7 @@
 <?php
 namespace Lyssal\GeographieBundle\Entity;
 
-use Sonata\TranslationBundle\Model\Gedmo\AbstractPersonalTranslatable;
+use Sonata\TranslationBundle\Traits\Gedmo\PersonalTranslatable;
 use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +13,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author Rémi Leclerc <rleclerc@Lyssal.com>
  * @ORM\MappedSuperclass
  */
-abstract class Ville extends AbstractPersonalTranslatable implements TranslatableInterface
+abstract class Ville implements TranslatableInterface
 {
+    use PersonalTranslatable;
+
     /**
      * @var integer
      *
@@ -99,13 +101,6 @@ abstract class Ville extends AbstractPersonalTranslatable implements Translatabl
      * @ORM\Column(name="ville_gentile", type="string", nullable=true, length=32)
      */
     private $gentile;
-
-    /**
-     * @var string
-     *
-     * @Gedmo\Locale
-     */
-    protected $locale;
 
 
     /**

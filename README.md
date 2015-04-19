@@ -236,9 +236,31 @@ php composer.phar update
 ```
 3. Mettez à jour `AppKernel.php` :
 ```php
+new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+new Lyssal\StructureBundle\LyssalStructureBundle(),
 new Lyssal\GeographieBundle\LyssalGeographieBundle(),
+new Acme\GeographieBundle\AcmeGeographieBundle(),
 ```
-4. Créez les tables en base de données :
+4. Mettez à jour votre `config.yml` :
+```yaml
+doctrine:
+    orm:
+        auto_mapping: true
+        mappings:
+            translatable:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Translatable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+
+stof_doctrine_extensions:
+    default_locale: "%locale%"
+    orm:
+        default:
+            translatable: true
+            sluggable: true
+```
+5. Créez les tables en base de données :
 ```sh
 php app/console doctrine:schema:update --force
 ```
