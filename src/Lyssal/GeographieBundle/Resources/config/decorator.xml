@@ -2,10 +2,28 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="lyssal.geographie.decorator.departement.class">Lyssal\GeographieBundle\Decorator\DepartementDecorator</parameter>
+        <parameter key="lyssal.geographie.decorator.pays.class">Lyssal\GeographieBundle\Decorator\PaysDecorator</parameter>
+        <parameter key="lyssal.geographie.decorator.region.class">Lyssal\GeographieBundle\Decorator\RegionDecorator</parameter>
         <parameter key="lyssal.geographie.decorator.ville.class">Lyssal\GeographieBundle\Decorator\VilleDecorator</parameter>
     </parameters>
 
     <services>
+        <service id="lyssal.geographie.decorator.departement" class="%lyssal.geographie.decorator.departement.class%">
+            <argument type="service" id="router" />
+            <argument type="service" id="lyssal.decorator" />
+            <tag name="decorator_handler" />
+        </service>
+        <service id="lyssal.geographie.decorator.pays" class="%lyssal.geographie.decorator.pays.class%">
+            <argument type="service" id="router" />
+            <argument type="service" id="lyssal.decorator" />
+            <tag name="decorator_handler" />
+        </service>
+        <service id="lyssal.geographie.decorator.region" class="%lyssal.geographie.decorator.region.class%">
+            <argument type="service" id="router" />
+            <argument type="service" id="lyssal.decorator" />
+            <tag name="decorator_handler" />
+        </service>
         <service id="lyssal.geographie.decorator.ville" class="%lyssal.geographie.decorator.ville.class%">
             <argument type="service" id="router" />
             <argument type="service" id="lyssal.decorator" />
