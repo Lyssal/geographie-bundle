@@ -3,6 +3,7 @@
 
     <parameters>
         <parameter key="lyssal.geographie.manager.departement.class">Lyssal\GeographieBundle\Manager\DepartementManager</parameter>
+        <parameter key="lyssal.geographie.manager.langue.class">Lyssal\GeographieBundle\Manager\LangueManager</parameter>
         <parameter key="lyssal.geographie.manager.pays.class">Lyssal\GeographieBundle\Manager\PaysManager</parameter>
         <parameter key="lyssal.geographie.manager.region.class">Lyssal\GeographieBundle\Manager\RegionManager</parameter>
         <parameter key="lyssal.geographie.manager.ville.class">Lyssal\GeographieBundle\Manager\VilleManager</parameter>
@@ -12,6 +13,10 @@
         <service id="lyssal.geographie.manager.departement" class="%lyssal.geographie.manager.departement.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%lyssal.geographie.entity.departement.class%</argument>
+        </service>
+        <service id="lyssal.geographie.manager.langue" class="%lyssal.geographie.manager.langue.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lyssal.geographie.entity.langue.class%</argument>
         </service>
         <service id="lyssal.geographie.manager.pays" class="%lyssal.geographie.manager.pays.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />

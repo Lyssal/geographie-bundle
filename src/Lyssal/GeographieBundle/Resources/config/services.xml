@@ -9,10 +9,11 @@
     </imports>
     
     <parameters>
-        <parameter key="lyssal.geographie.entity.ville.class">Lyssal\GeographieBundle\Entity\Ville</parameter>
         <parameter key="lyssal.geographie.entity.departement.class">Lyssal\GeographieBundle\Entity\Departement</parameter>
-        <parameter key="lyssal.geographie.entity.region.class">Lyssal\GeographieBundle\Entity\Region</parameter>
+        <parameter key="lyssal.geographie.entity.langue.class">Lyssal\GeographieBundle\Entity\Langue</parameter>
         <parameter key="lyssal.geographie.entity.pays.class">Lyssal\GeographieBundle\Entity\Pays</parameter>
+        <parameter key="lyssal.geographie.entity.region.class">Lyssal\GeographieBundle\Entity\Region</parameter>
+        <parameter key="lyssal.geographie.entity.ville.class">Lyssal\GeographieBundle\Entity\Ville</parameter>
     </parameters>
     
     <services>

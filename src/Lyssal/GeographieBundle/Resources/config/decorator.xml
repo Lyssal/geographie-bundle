@@ -3,6 +3,7 @@
 
     <parameters>
         <parameter key="lyssal.geographie.decorator.departement.class">Lyssal\GeographieBundle\Decorator\DepartementDecorator</parameter>
+        <parameter key="lyssal.geographie.decorator.langue.class">Lyssal\GeographieBundle\Decorator\LangueDecorator</parameter>
         <parameter key="lyssal.geographie.decorator.pays.class">Lyssal\GeographieBundle\Decorator\PaysDecorator</parameter>
         <parameter key="lyssal.geographie.decorator.region.class">Lyssal\GeographieBundle\Decorator\RegionDecorator</parameter>
         <parameter key="lyssal.geographie.decorator.ville.class">Lyssal\GeographieBundle\Decorator\VilleDecorator</parameter>
@@ -10,6 +11,11 @@
 
     <services>
         <service id="lyssal.geographie.decorator.departement" class="%lyssal.geographie.decorator.departement.class%">
+            <argument type="service" id="router" />
+            <argument type="service" id="lyssal.decorator" />
+            <tag name="decorator_handler" />
+        </service>
+        <service id="lyssal.geographie.decorator.langue" class="%lyssal.geographie.decorator.langue.class%">
             <argument type="service" id="router" />
             <argument type="service" id="lyssal.decorator" />
             <tag name="decorator_handler" />

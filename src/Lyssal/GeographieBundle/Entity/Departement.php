@@ -1,7 +1,7 @@
 <?php
 namespace Lyssal\GeographieBundle\Entity;
 
-use Sonata\TranslationBundle\Traits\Gedmo\PersonalTranslatable;
+use Gedmo\Translatable\Translatable;
 use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,10 +13,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author Rémi Leclerc <rleclerc@Lyssal.com>
  * @ORM\MappedSuperclass
  */
-abstract class Departement implements TranslatableInterface
+abstract class Departement implements Translatable, TranslatableInterface
 {
-    use PersonalTranslatable;
-
     /**
      * @var integer
      *
@@ -27,10 +25,16 @@ abstract class Departement implements TranslatableInterface
     private $id;
     
     /**
+     * @var string
+     * @Gedmo\Locale()
+     */
+    protected $locale;
+    
+    /**
      * @var \Lyssal\GeographieBundle\Entity\Region
      * 
      * @ORM\ManyToOne(targetEntity="Region", inversedBy="departements")
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="reg_id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="region_id", referencedColumnName="region_id", nullable=false, onDelete="CASCADE")
      */
     protected $region;
     
@@ -87,6 +91,29 @@ abstract class Departement implements TranslatableInterface
         return $this->id;
     }
 
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return \Lyssal\GeographieBundle\Entity\Departement
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    
+        return $this;
+    }
+    
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+    
     /**
      * Set nom
      *

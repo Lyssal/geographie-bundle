@@ -1,6 +1,6 @@
 # LyssalGeographieBundle
 
-LyssalGeographieBundle permet la manipulation de différentes données géographiques.
+LyssalGeographieBundle permet la manipulation de différentes données géographiques et des langues.
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/ee28a3ce-401b-4b08-9f4e-71f5d738da10/small.png)](https://insight.sensiolabs.com/projects/ee28a3ce-401b-4b08-9f4e-71f5d738da10)
 
@@ -14,6 +14,7 @@ Les entités sont :
 * Region
 * Departement
 * Ville
+* Langue
 
 ## Utilisation
 
@@ -39,6 +40,7 @@ namespace Acme\GeographieBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Lyssal\GeographieBundle\Entity\Pays as BasePays;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * Pays du monde.
@@ -97,6 +99,7 @@ namespace Acme\GeographieBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Lyssal\GeographieBundle\Entity\Departement as BaseDepartement;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * Département d'une région.
@@ -152,6 +155,24 @@ class Ville extends BaseVille
     protected $departement;
 }
 ```
+```php
+namespace Acme\GeographieBundle\Entity;
+
+use Lyssal\GeographieBundle\Entity\Langue as BaseLangue;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+
+/**
+ * Langue.
+ * 
+ * @ORM\Entity()
+ * @ORM\Table(name="acme_langue")
+ */
+class Langue extends BaseLangue
+{
+    
+}
+```
 
 Vous devez ensuite redéfinir les paramètres suivants :
 
@@ -159,6 +180,7 @@ Vous devez ensuite redéfinir les paramètres suivants :
 * `lyssal.geographie.entity.pays.class` : Acme\GeographieBundle\Entity\Pays
 * `lyssal.geographie.entity.region.class` : Acme\GeographieBundle\Entity\Region
 * `lyssal.geographie.entity.ville.class` : Acme\GeographieBundle\Entity\Ville
+* `lyssal.geographie.entity.langue.class` : Acme\GeographieBundle\Entity\Langue
 
 Exemple avec sur `Acme/GeographieBundle/Resources/config/services.xml` :
 
@@ -170,9 +192,39 @@ Exemple avec sur `Acme/GeographieBundle/Resources/config/services.xml` :
         <parameter key="lyssal.geographie.entity.departement.class">Acme\GeographieBundle\Entity\Departement</parameter>
         <parameter key="lyssal.geographie.entity.region.class">Acme\GeographieBundle\Entity\Region</parameter>
         <parameter key="lyssal.geographie.entity.pays.class">Acme\GeographieBundle\Entity\Pays</parameter>
+        <parameter key="lyssal.geographie.entity.langue.class">Acme\GeographieBundle\Entity\Langue</parameter>
     </parameters>
 </container>
 ```
+
+Vous devez paramétrer `` :
+
+Dans votre `AppKernel.php` :
+```php
+new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+```
+
+Exemple dans votre `config.yml` :
+```yaml
+doctrine:
+    # ...
+    orm:
+        # ...
+        mappings:
+            translatable:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Translatable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+
+stof_doctrine_extensions:
+    default_locale: "%locale%"
+    orm:
+        default:
+            translatable: true
+            sluggable: true
+```
+
 
 ## Managers
 
@@ -181,6 +233,7 @@ Les services sont :
 * lyssal.geographie.manager.pays
 * lyssal.geographie.manager.region
 * lyssal.geographie.manager.ville
+* lyssal.geographie.manager.langue
 
 ### Exemple d'utilisation
 
@@ -197,14 +250,12 @@ Si vous utilisez vos propres managers héritant des managers de LyssalGeographie
 * `lyssal.geographie.manager.pays.class`
 * `lyssal.geographie.manager.region.class`
 * `lyssal.geographie.manager.ville.class`
+* `lyssal.geographie.manager.langue.class`
 
-Exemple en XML :
+Exemple en XML d'un manager personnalisé :
 ```xml
 <parameters>
     <parameter key="lyssal.geographie.manager.departement.class">Acme\GeographieBundle\Manager\DepartementManager</parameter>
-    <parameter key="lyssal.geographie.manager.pays.class">Acme\GeographieBundle\Manager\PaysManager</parameter>
-    <parameter key="lyssal.geographie.manager.region.class">Acme\GeographieBundle\Manager\RegionManager</parameter>
-    <parameter key="lyssal.geographie.manager.ville.class">Acme\GeographieBundle\Manager\VilleManager</parameter>
 </parameters>
 ```
 
@@ -217,6 +268,7 @@ Si vous souhaitez redéfinir les classes Admin, il suffit de surcharger les para
 * `lyssal.geographie.admin.pays.class`
 * `lyssal.geographie.admin.region.class`
 * `lyssal.geographie.admin.ville.class`
+* `lyssal.geographie.admin.langue.class`
 
 
 ## Installation
@@ -271,7 +323,7 @@ php app/console doctrine:schema:update --force
 
 Vide et importe des données :
 ```sh
-lyssal:geographie:database:import
+php app/console lyssal:geographie:database:import
 ```
 
 Attention : Les tables seront automatiquement vidées lors de l'appel de cette commande.
@@ -286,7 +338,7 @@ Le remplissage de la base concerne :
 
 ### CSV
 
-Pour remplir la base de données, `LyssalGeographieBundle` utilisent les CSV de sql.sh pour les pays, les départements et les villes.
+Pour remplir la base de données, `LyssalGeographieBundle` utilise les CSV de sql.sh pour les pays, les départements et les villes.
 
 Ce(tte) oeuvre de [http://sql.sh](http://sql.sh) est mise à disposition selon les termes de la licence Creative Commons Attribution – Partage dans les Mêmes Conditions 4.0 International(http://creativecommons.org/licenses/by-sa/4.0/).
 

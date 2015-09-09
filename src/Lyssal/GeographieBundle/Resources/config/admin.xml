@@ -3,6 +3,7 @@
 
     <parameters>
         <parameter key="lyssal.geographie.admin.departement.class">Lyssal\GeographieBundle\Admin\DepartementAdmin</parameter>
+        <parameter key="lyssal.geographie.admin.langue.class">Lyssal\GeographieBundle\Admin\LangueAdmin</parameter>
         <parameter key="lyssal.geographie.admin.pays.class">Lyssal\GeographieBundle\Admin\PaysAdmin</parameter>
         <parameter key="lyssal.geographie.admin.region.class">Lyssal\GeographieBundle\Admin\RegionAdmin</parameter>
         <parameter key="lyssal.geographie.admin.ville.class">Lyssal\GeographieBundle\Admin\VilleAdmin</parameter>
@@ -10,37 +11,31 @@
 
     <services>
         <service id="lyssal.geographie.admin.departement" class="%lyssal.geographie.admin.departement.class%">
-            <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info_slashes" />
-            </call>
-            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Départements" icon="&lt;i class='fa fa-globe'&gt;&lt;/i&gt;" />
+            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Départements" icon="&lt;i class='fa fa-globe'&gt;&lt;/i&gt;" route_builder="sonata.admin.route.path_info" />
             <argument/>
             <argument>%lyssal.geographie.entity.departement.class%</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
+        <service id="lyssal.geographie.admin.langue" class="%lyssal.geographie.admin.langue.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Langue" route_builder="sonata.admin.route.path_info" />
+            <argument/>
+            <argument>%lyssal.geographie.entity.langue.class%</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
         <service id="lyssal.geographie.admin.pays" class="%lyssal.geographie.admin.pays.class%">
-            <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info_slashes" />
-            </call>
-            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Pays" />
+            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Pays" route_builder="sonata.admin.route.path_info" />
             <argument/>
             <argument>%lyssal.geographie.entity.pays.class%</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
         <service id="lyssal.geographie.admin.region" class="%lyssal.geographie.admin.region.class%">
-            <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info_slashes" />
-            </call>
-            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Régions" />
+            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Régions" route_builder="sonata.admin.route.path_info" />
             <argument/>
             <argument>%lyssal.geographie.entity.region.class%</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
         <service id="lyssal.geographie.admin.ville" class="%lyssal.geographie.admin.ville.class%">
-            <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info_slashes" />
-            </call>
-            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Villes" />
+            <tag name="sonata.admin" manager_type="orm" group="Géographie" label="Villes" route_builder="sonata.admin.route.path_info" />
             <argument/>
             <argument>%lyssal.geographie.entity.ville.class%</argument>
             <argument>SonataAdminBundle:CRUD</argument>

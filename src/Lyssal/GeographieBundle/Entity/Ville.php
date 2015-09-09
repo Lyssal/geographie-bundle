@@ -1,7 +1,7 @@
 <?php
 namespace Lyssal\GeographieBundle\Entity;
 
-use Sonata\TranslationBundle\Traits\Gedmo\PersonalTranslatable;
+use Gedmo\Translatable\Translatable;
 use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,10 +13,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author Rémi Leclerc <rleclerc@Lyssal.com>
  * @ORM\MappedSuperclass
  */
-abstract class Ville implements TranslatableInterface
+abstract class Ville implements Translatable, TranslatableInterface
 {
-    use PersonalTranslatable;
-
     /**
      * @var integer
      *
@@ -25,6 +23,12 @@ abstract class Ville implements TranslatableInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var string
+     * @Gedmo\Locale()
+     */
+    protected $locale;
     
     /**
      * @var string
@@ -113,6 +117,29 @@ abstract class Ville implements TranslatableInterface
         return $this->id;
     }
 
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return \Lyssal\GeographieBundle\Entity\Ville
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    
+        return $this;
+    }
+    
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+    
     /**
      * Set nom
      *

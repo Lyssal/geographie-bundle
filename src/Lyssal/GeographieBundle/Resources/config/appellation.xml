@@ -3,6 +3,7 @@
 
     <parameters>
         <parameter key="lyssal.geographie.appellation.departement.class">Lyssal\GeographieBundle\Appellation\DepartementAppellation</parameter>
+        <parameter key="lyssal.geographie.appellation.langue.class">Lyssal\GeographieBundle\Appellation\LangueAppellation</parameter>
         <parameter key="lyssal.geographie.appellation.pays.class">Lyssal\GeographieBundle\Appellation\PaysAppellation</parameter>
         <parameter key="lyssal.geographie.appellation.region.class">Lyssal\GeographieBundle\Appellation\RegionAppellation</parameter>
         <parameter key="lyssal.geographie.appellation.ville.class">Lyssal\GeographieBundle\Appellation\VilleAppellation</parameter>
@@ -10,6 +11,10 @@
 
     <services>
         <service id="lyssal.geographie.appellation.departement" class="%lyssal.geographie.appellation.departement.class%">
+            <argument type="service" id="router" />
+            <tag name="appellation_handler" />
+        </service>
+        <service id="lyssal.geographie.appellation.langue" class="%lyssal.geographie.appellation.langue.class%">
             <argument type="service" id="router" />
             <tag name="appellation_handler" />
         </service>
