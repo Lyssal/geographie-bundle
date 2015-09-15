@@ -21,8 +21,8 @@
 		"sonata-project/translation-bundle": "1.*"
 	},
 	"suggest" : {
-		"lyssal/admin-bundle" : "Pour gérer LyssalTourismeBundle depuis la console administrative (basé sur SonataAdmin)",
-		"sonata-project/admin-bundle" : "Pour gérer les entités depuis la console administrative"
+		"lyssal/admin-bundle" : "Pour gérer les données géographiques depuis une console administrative basée sur SonataAdmin",
+		"sonata-project/admin-bundle" : "Pour gérer les données géographiques depuis une console administrative"
 	},
 	"autoload" : {
 		"psr-0" : {
