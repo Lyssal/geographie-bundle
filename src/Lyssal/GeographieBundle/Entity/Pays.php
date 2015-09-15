@@ -22,7 +22,7 @@ abstract class Pays implements Translatable, TranslatableInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
     
     /**
      * @var string
@@ -37,7 +37,7 @@ abstract class Pays implements Translatable, TranslatableInterface
      * @Assert\NotBlank
      * @Gedmo\Translatable
      */
-    private $nom;
+    protected $nom;
     
     /**
      * @var string
@@ -52,17 +52,17 @@ abstract class Pays implements Translatable, TranslatableInterface
      * @var string
      *
      * @ORM\Column(name="pays_code_alpha_2", type="string", nullable=false, length=2)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      */
-    private $codeAlpha2;
+    protected $codeAlpha2;
 
     /**
      * @var string
      *
      * @ORM\Column(name="pays_code_alpha_3", type="string", nullable=false, length=3)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      */
-    private $codeAlpha3;
+    protected $codeAlpha3;
     
     /**
      * @var \Doctrine\Common\Collections\Collection

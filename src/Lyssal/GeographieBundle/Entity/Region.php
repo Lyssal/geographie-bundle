@@ -22,7 +22,7 @@ abstract class Region implements Translatable, TranslatableInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
     
     /**
      * @var string
@@ -37,7 +37,7 @@ abstract class Region implements Translatable, TranslatableInterface
      * @Assert\NotBlank
      * @Gedmo\Translatable
      */
-    private $nom;
+    protected $nom;
     
     /**
      * @var string

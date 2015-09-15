@@ -22,7 +22,7 @@ abstract class Ville implements Translatable, TranslatableInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
     
     /**
      * @var string
@@ -36,7 +36,7 @@ abstract class Ville implements Translatable, TranslatableInterface
      * @ORM\Column(name="ville_nom", type="string", nullable=false, length=128)
      * @Assert\NotBlank
      */
-    private $nom;
+    protected $nom;
     
     /**
      * @var string
@@ -60,7 +60,7 @@ abstract class Ville implements Translatable, TranslatableInterface
      * @ORM\Column(name="ville_code_postal", type="string", nullable=false, length=5)
      * @Assert\NotBlank
      */
-    private $codePostal;
+    protected $codePostal;
     
     /**
      * @var string
@@ -68,21 +68,21 @@ abstract class Ville implements Translatable, TranslatableInterface
      * @ORM\Column(name="ville_code_commune", type="string", nullable=false, length=5)
      * @Assert\NotBlank
      */
-    private $codeCommune;
+    protected $codeCommune;
     
     /**
      * @var number
      *
      * @ORM\Column(name="ville_latitude", type="decimal", nullable=true, precision=10, scale=8)
      */
-    private $latitude;
+    protected $latitude;
     
     /**
      * @var number
      *
      * @ORM\Column(name="ville_longitude", type="decimal", nullable=true, precision=10, scale=8)
      */
-    private $longitude;
+    protected $longitude;
     
     /**
      * @var string
@@ -90,21 +90,21 @@ abstract class Ville implements Translatable, TranslatableInterface
      * @ORM\Column(name="ville_description", type="string", nullable=true, length=255)
      * @Gedmo\Translatable
      */
-    private $description;
+    protected $description;
     
     /**
      * @var string
      *
      * @ORM\Column(name="ville_site_web", type="string", nullable=true, length=128)
      */
-    private $siteWeb;
+    protected $siteWeb;
     
     /**
      * @var string
      *
      * @ORM\Column(name="ville_gentile", type="string", nullable=true, length=32)
      */
-    private $gentile;
+    protected $gentile;
 
 
     /**

@@ -45,7 +45,7 @@ abstract class Departement implements Translatable, TranslatableInterface
      * @Assert\NotBlank
      * @Gedmo\Translatable
      */
-    private $nom;
+    protected $nom;
     
     /**
      * @var string
@@ -62,7 +62,7 @@ abstract class Departement implements Translatable, TranslatableInterface
      * @ORM\Column(name="departement_code", type="string", nullable=false, length=3)
      * @Assert\NotBlank
      */
-    private $code;
+    protected $code;
     
     /**
      * @var array<\Lyssal\GeographieBundle\Entity\Ville>
