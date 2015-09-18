@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <trans-unit id="code">
+                <source>code</source>
+                <target>Code</target>
+            </trans-unit>
+            <trans-unit id="codeAlpha2">
+                <source>codeAlpha2</source>
+                <target>Code ISO 3166-1 alpha 2</target>
+            </trans-unit>
+            <trans-unit id="codeAlpha3">
+                <source>codeAlpha3</source>
+                <target>Code ISO 3166-1 alpha 3</target>
+            </trans-unit>
+            <trans-unit id="codeCommune">
+                <source>codeCommune</source>
+                <target>Code commune</target>
+            </trans-unit>
+            <trans-unit id="codePostal">
+                <source>codePostal</source>
+                <target>Code postal</target>
+            </trans-unit>
+            <trans-unit id="culture">
+                <source>culture</source>
+                <target>Culture</target>
+            </trans-unit>
+            <trans-unit id="departement">
+                <source>departement</source>
+                <target>Département</target>
+            </trans-unit>
+            <trans-unit id="departements">
+                <source>departements</source>
+                <target>Départements</target>
+            </trans-unit>
+            <trans-unit id="description">
+                <source>description</source>
+                <target>Description</target>
+            </trans-unit>
+            <trans-unit id="gentile">
+                <source>gentile</source>
+                <target>Gentilé</target>
+            </trans-unit>
+            <trans-unit id="langue">
+                <source>langue</source>
+                <target>Langue</target>
+            </trans-unit>
+            <trans-unit id="latitude">
+                <source>latitude</source>
+                <target>Latitude</target>
+            </trans-unit>
+            <trans-unit id="longitude">
+                <source>longitude</source>
+                <target>Longitude</target>
+            </trans-unit>
+            <trans-unit id="nom">
+                <source>nom</source>
+                <target>Nom</target>
+            </trans-unit>
+            <trans-unit id="pays">
+                <source>pays</source>
+                <target>Pays</target>
+            </trans-unit>
+            <trans-unit id="region">
+                <source>region</source>
+                <target>Région</target>
+            </trans-unit>
+            <trans-unit id="regions">
+                <source>regions</source>
+                <target>Régions</target>
+            </trans-unit>
+            <trans-unit id="siteWeb">
+                <source>siteWeb</source>
+                <target>Site web</target>
+            </trans-unit>
+            <trans-unit id="ville">
+                <source>ville</source>
+                <target>Ville</target>
+            </trans-unit>
+            <trans-unit id="villes">
+                <source>villes</source>
+                <target>Villes</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
