@@ -34,8 +34,8 @@ abstract class Pays implements Translatable, TranslatableInterface
      * @var string
      *
      * @ORM\Column(name="pays_nom", type="string", nullable=false, length=128)
-     * @Assert\NotBlank
-     * @Gedmo\Translatable
+     * @Assert\NotBlank()
+     * @Gedmo\Translatable()
      */
     protected $nom;
     
@@ -52,7 +52,6 @@ abstract class Pays implements Translatable, TranslatableInterface
      * @var string
      *
      * @ORM\Column(name="pays_code_alpha_2", type="string", nullable=false, length=2)
-     * @Assert\NotBlank()
      */
     protected $codeAlpha2;
 
@@ -60,7 +59,6 @@ abstract class Pays implements Translatable, TranslatableInterface
      * @var string
      *
      * @ORM\Column(name="pays_code_alpha_3", type="string", nullable=false, length=3)
-     * @Assert\NotBlank()
      */
     protected $codeAlpha3;
     

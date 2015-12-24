@@ -160,7 +160,6 @@ namespace Acme\GeographieBundle\Entity;
 
 use Lyssal\GeographieBundle\Entity\Langue as BaseLangue;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * Langue.
