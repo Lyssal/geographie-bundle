@@ -139,11 +139,9 @@ class UpdateCommand extends Command
      */
     private function initCheminLyssalGeographieBundleFiles()
     {
-        foreach ($this->fileLocator->locate('@LyssalGeographieBundle', null, false) as $cheminGeographieBundle)
-        {
-            if (false !== strpos($cheminGeographieBundle, 'src/Lyssal/GeographieBundle'))
-            {
-                $this->cheminLyssalGeographieBundleFiles = $cheminGeographieBundle.'../../../files';
+        foreach ($this->fileLocator->locate('@LyssalGeographieBundle', null, false) as $cheminGeographieBundle) {
+            if (false !== strpos($cheminGeographieBundle, 'Lyssal'.DIRECTORY_SEPARATOR.'GeographieBundle')) {
+                $this->cheminLyssalGeographieBundleFiles = $cheminGeographieBundle.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'files';
                 break;
             }
         }
@@ -154,7 +152,7 @@ class UpdateCommand extends Command
      */
     private function importePays()
     {
-        $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.'/csv/pays.csv', ',', '"');
+        $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.DIRECTORY_SEPARATOR.'csv'.DIRECTORY_SEPARATOR.'pays.csv', ',', '"');
         $fichierCsv->importe(false);
     
         $this->paysManager->removeAll(true);
@@ -162,8 +160,7 @@ class UpdateCommand extends Command
         $this->departementManager->initAutoIncrement();
         $this->villeManager->initAutoIncrement();
     
-        foreach ($fichierCsv->getLignes() as $ligneCsv)
-        {
+        foreach ($fichierCsv->getLignes() as $ligneCsv) {
             $codeAlpha2 = $ligneCsv[2];
             $codeAlpha3 = $ligneCsv[3];
             $nomFr = $ligneCsv[4];
@@ -184,8 +181,7 @@ class UpdateCommand extends Command
     
             $this->paysManager->save($pays);
             
-            if ('FRA' === $codeAlpha3)
-            {
+            if ('FRA' === $codeAlpha3) {
                 $this->importeFranceRegions($pays);
                 $this->importeFranceDepartements($pays);
                 $this->importeFranceVilles($pays);
@@ -215,7 +211,7 @@ class UpdateCommand extends Command
      */
     private function importeFranceDepartements($paysFrance)
     {
-        $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.'/csv/departements-france.csv', ',', '"');
+        $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.DIRECTORY_SEPARATOR.'csv'.DIRECTORY_SEPARATOR.'departements-france.csv', ',', '"');
         $fichierCsv->importe(false);
         
         foreach ($fichierCsv->getLignes() as $ligneCsv)
@@ -273,7 +269,7 @@ class UpdateCommand extends Command
         foreach ($this->departementManager->findByPays($paysFrance) as $departement)
             $departementsByCode[$departement->getCode()] = $departement;
         
-        $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.'/csv/villes-france.csv', ',', '"');
+        $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.DIRECTORY_SEPARATOR.'csv'.DIRECTORY_SEPARATOR.'villes-france.csv', ',', '"');
         $fichierCsv->importe(false);
     
         $compteur = 0;
