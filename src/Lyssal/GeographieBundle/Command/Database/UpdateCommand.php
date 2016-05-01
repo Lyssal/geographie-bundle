@@ -8,6 +8,7 @@ use Lyssal\GeographieBundle\Entity\Pays;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Config\FileLocatorInterface;
+use Lyssal\GeographieBundle\Manager\CodePostalManager;
 use Lyssal\GeographieBundle\Manager\PaysManager;
 use Lyssal\GeographieBundle\Manager\RegionManager;
 use Lyssal\GeographieBundle\Manager\DepartementManager;
@@ -51,6 +52,11 @@ class UpdateCommand extends Command
     private $villeManager;
 
     /**
+     * @var \Lyssal\GeographieBundle\Manager\CodePostalManager CodePostalManager
+     */
+    private $codePostalManager;
+
+    /**
      * @var string Chemin vers le dossier de fichiers de LyssalGeographieBundle
      */
     private $cheminLyssalGeographieBundleFiles;
@@ -87,7 +93,7 @@ class UpdateCommand extends Command
      * @param \Lyssal\GeographieBundle\Manager\DepartementManager DepartementManager $departementManager
      * @param \Lyssal\GeographieBundle\Manager\VilleManager VilleManager $villeManager
      */
-    public function __construct(RegistryInterface $doctrine, FileLocatorInterface $fileLocator, PaysManager $paysManager, RegionManager $regionManager, DepartementManager $departementManager, VilleManager $villeManager)
+    public function __construct(RegistryInterface $doctrine, FileLocatorInterface $fileLocator, PaysManager $paysManager, RegionManager $regionManager, DepartementManager $departementManager, VilleManager $villeManager, CodePostalManager $codePostalManager)
     {
         $this->doctrine = $doctrine;
         $this->fileLocator = $fileLocator;
@@ -95,6 +101,7 @@ class UpdateCommand extends Command
         $this->regionManager = $regionManager;
         $this->departementManager = $departementManager;
         $this->villeManager = $villeManager;
+        $this->codePostalManager = $codePostalManager;
 
         parent::__construct();
     }
@@ -146,10 +153,11 @@ class UpdateCommand extends Command
         $fichierCsv = new Csv($this->cheminLyssalGeographieBundleFiles.DIRECTORY_SEPARATOR.'csv'.DIRECTORY_SEPARATOR.'pays.csv', ',', '"');
         $fichierCsv->importe(false);
 
+        $this->villeManager->removeAll(true);
         $this->paysManager->removeAll(true);
         $this->regionManager->initAutoIncrement();
         $this->departementManager->initAutoIncrement();
-        $this->villeManager->initAutoIncrement();
+        $this->codePostalManager->initAutoIncrement();
 
         foreach ($fichierCsv->getLignes() as $ligneCsv) {
             $codeAlpha2 = $ligneCsv[2];
@@ -170,7 +178,7 @@ class UpdateCommand extends Command
             $pays->setNom($nomEn);
             $pays->setLocale('en');
 
-            $this->paysManager->save($pays);
+            $this->paysManager->persist($pays);
 
             if ('FRA' === $codeAlpha3) {
                 $this->importeFranceRegions($pays);
@@ -178,6 +186,8 @@ class UpdateCommand extends Command
                 $this->importeFranceVilles($pays);
             }
         }
+
+        $this->paysManager->flush();
     }
 
     /**
@@ -193,8 +203,10 @@ class UpdateCommand extends Command
             $region->setLocale('fr');
             $region->setPays($paysFrance);
 
-            $this->regionManager->save($region);
+            $this->regionManager->persist($region);
         }
+
+        $this->regionManager->flush();
     }
 
     /**
@@ -218,8 +230,10 @@ class UpdateCommand extends Command
             $departement->setNom($nomFr);
             $departement->setLocale('fr');
 
-            $this->departementManager->save($departement);
+            $this->departementManager->persist($departement);
         }
+
+        $this->departementManager->flush();
     }
 
     /**
@@ -275,14 +289,18 @@ class UpdateCommand extends Command
 
                 $departement = $departementsByCode[$codeDepartement];
                 $nomFr = $ligneCsv[5];
-                $codePostal = $ligneCsv[8];
+                $codePostalCodes = explode('-', $ligneCsv[8]);
                 $codeCommune = $ligneCsv[10];
                 $longitude = floatval($ligneCsv[19]);
                 $latitude = floatval($ligneCsv[20]);
 
                 $ville = $this->villeManager->create();
                 $ville->setDepartement($departement);
-                $ville->setCodePostal($codePostal);
+                foreach ($codePostalCodes as $codePostalCode) {
+                    $codePostal = $this->codePostalManager->create();
+                    $codePostal->setCode($codePostalCode);
+                    $ville->addCodePostal($codePostal);
+                }
                 $ville->setCodeCommune($codeCommune);
                 $ville->setLatitude($latitude);
                 $ville->setLongitude($longitude);
@@ -292,18 +310,16 @@ class UpdateCommand extends Command
 
                 $this->villeManager->persist($ville);
 
-                if (++$compteur % 100 == 0)
-                {
+                if (++$compteur % 1000 == 0) {
                     $this->villeManager->flush();
                     $this->villeManager->clear();
+                    $this->codePostalManager->clear();
                 }
             }
         }
 
-        if (++$compteur % 100 == 0)
-        {
+        if (++$compteur % 1000 == 0) {
             $this->villeManager->flush();
-            $this->villeManager->clear();
         }
     }
 }

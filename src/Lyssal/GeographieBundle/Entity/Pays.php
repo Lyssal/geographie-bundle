@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Pays du monde.
  * 
- * @author Rémi Leclerc <rleclerc@Lyssal.com>
+ * @author Rémi Leclerc
  * @ORM\MappedSuperclass
  */
 abstract class Pays implements Translatable, TranslatableInterface

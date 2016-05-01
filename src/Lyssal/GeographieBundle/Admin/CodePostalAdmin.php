@@ -8,11 +8,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
- * Classe VilleAdmin pour SonataAdmin.
+ * Classe CodePostalAdmin pour SonataAdmin.
  * 
  * @author Rémi Leclerc
  */
-class VilleAdmin extends Admin
+class CodePostalAdmin extends Admin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -20,8 +20,8 @@ class VilleAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('nom')
-            ->add('departement')
+            ->add('ville')
+            ->add('code')
         ;
     }
 
@@ -31,8 +31,9 @@ class VilleAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('nom')
-            ->add('departement.nom')
+            ->add('ville.nom')
+            ->add('code')
+            ->add('description')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -49,14 +50,9 @@ class VilleAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nom')
-            ->add('codeCommune')
-            ->add('departement')
-            ->add('latitude')
-            ->add('longitude')
+            ->add('ville')
+            ->add('code')
             ->add('description')
-            ->add('siteWeb')
-            ->add('gentile')
         ;
     }
 
@@ -66,14 +62,9 @@ class VilleAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('nom')
-            ->add('codeCommune')
-            ->add('departement')
-            ->add('latitude')
-            ->add('longitude')
+            ->add('ville')
+            ->add('code')
             ->add('description')
-            ->add('siteWeb')
-            ->add('gentile')
         ;
     }
 }

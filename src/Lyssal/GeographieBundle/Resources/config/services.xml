@@ -9,6 +9,7 @@
     </imports>
     
     <parameters>
+        <parameter key="lyssal.geographie.entity.code_postal.class">Lyssal\GeographieBundle\Entity\CodePostal</parameter>
         <parameter key="lyssal.geographie.entity.departement.class">Lyssal\GeographieBundle\Entity\Departement</parameter>
         <parameter key="lyssal.geographie.entity.langue.class">Lyssal\GeographieBundle\Entity\Langue</parameter>
         <parameter key="lyssal.geographie.entity.pays.class">Lyssal\GeographieBundle\Entity\Pays</parameter>
@@ -24,6 +25,7 @@
     		<argument type="service" id="lyssal.geographie.manager.region" />
     		<argument type="service" id="lyssal.geographie.manager.departement" />
     		<argument type="service" id="lyssal.geographie.manager.ville" />
+    		<argument type="service" id="lyssal.geographie.manager.code_postal" />
             <tag name="console.command" />
         </service>
     </services>

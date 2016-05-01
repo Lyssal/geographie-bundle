@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Ville.
  * 
- * @author Rémi Leclerc <rleclerc@Lyssal.com>
+ * @author Rémi Leclerc
  * @ORM\MappedSuperclass
  */
 abstract class Ville implements Translatable, TranslatableInterface
@@ -56,17 +56,21 @@ abstract class Ville implements Translatable, TranslatableInterface
     
     /**
      * @var string
-     *
-     * @ORM\Column(name="ville_code_postal", type="string", nullable=false, length=5)
-     * @Assert\NotBlank
+     * @deprecated since version 0.1.4
+     * @ORM\Column(name="ville_code_postal", type="string", nullable=true, length=5)
      */
     protected $codePostal;
     
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="CodePostal", mappedBy="ville", cascade={"persist"})
+     */
+    protected $codePostaux;
+    
+    /**
      * @var string
      *
-     * @ORM\Column(name="ville_code_commune", type="string", nullable=false, length=5)
-     * @Assert\NotBlank
+     * @ORM\Column(name="ville_code_commune", type="string", nullable=true, length=5)
      */
     protected $codeCommune;
     
@@ -105,6 +109,15 @@ abstract class Ville implements Translatable, TranslatableInterface
      * @ORM\Column(name="ville_gentile", type="string", nullable=true, length=32)
      */
     protected $gentile;
+
+
+    /**
+     * Constructeur.
+     */
+    public function __construct()
+    {
+        $this->codePostaux = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -212,6 +225,7 @@ abstract class Ville implements Translatable, TranslatableInterface
     /**
      * Set codePostal
      *
+     * @deprecated since version 0.1.4
      * @param string $codePostal
      * @return Ville
      */
@@ -225,11 +239,46 @@ abstract class Ville implements Translatable, TranslatableInterface
     /**
      * Get codePostal
      *
+     * @deprecated since version 0.1.4
      * @return string 
      */
     public function getCodePostal()
     {
         return $this->codePostal;
+    }
+
+    /**
+     * Add codePostal
+     *
+     * @param \Lyssal\GeographieBundle\Entity\CodePostal $codePostal
+     * @return \Lyssal\GeographieBundle\Entity\Ville
+     */
+    public function addCodePostal(\Lyssal\GeographieBundle\Entity\CodePostal $codePostal)
+    {
+        $codePostal->setVille($this);
+        $this->codePostaux[] = $codePostal;
+
+        return $this;
+    }
+
+    /**
+     * Remove codePostaux
+     *
+     * @param \Lyssal\GeographieBundle\Entity\CodePostal $codePostal
+     */
+    public function removeCodePostaux(\Lyssal\GeographieBundle\Entity\CodePostal $codePostal)
+    {
+        $this->codePostaux->removeElement($codePostal);
+    }
+
+    /**
+     * Get codePostaux
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCodePostaux()
+    {
+        return $this->codePostaux;
     }
 
     /**
@@ -380,5 +429,15 @@ abstract class Ville implements Translatable, TranslatableInterface
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * Equals.
+     *
+     * @return boolean Equals
+     */
+    public function equals(Ville $otherVille)
+    {
+        return ($this->id === $otherVille->getId());
     }
 }

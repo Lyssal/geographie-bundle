@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Département d'une région.
  * 
- * @author Rémi Leclerc <rleclerc@Lyssal.com>
+ * @author Rémi Leclerc
  * @ORM\MappedSuperclass
  */
 abstract class Departement implements Translatable, TranslatableInterface
@@ -245,7 +245,6 @@ abstract class Departement implements Translatable, TranslatableInterface
      *
      * @return string Nom du département
      */
-    
     public function __toString()
     {
         return $this->getNom();

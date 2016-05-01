@@ -2,6 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="lyssal.geographie.appellation.code_postal.class">Lyssal\GeographieBundle\Appellation\CodePostalAppellation</parameter>
         <parameter key="lyssal.geographie.appellation.departement.class">Lyssal\GeographieBundle\Appellation\DepartementAppellation</parameter>
         <parameter key="lyssal.geographie.appellation.langue.class">Lyssal\GeographieBundle\Appellation\LangueAppellation</parameter>
         <parameter key="lyssal.geographie.appellation.pays.class">Lyssal\GeographieBundle\Appellation\PaysAppellation</parameter>
@@ -10,6 +11,10 @@
     </parameters>
 
     <services>
+        <service id="lyssal.geographie.appellation.code_postal" class="%lyssal.geographie.appellation.code_postal.class%">
+            <argument type="service" id="router" />
+            <tag name="appellation_handler" />
+        </service>
         <service id="lyssal.geographie.appellation.departement" class="%lyssal.geographie.appellation.departement.class%">
             <argument type="service" id="router" />
             <tag name="appellation_handler" />

@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Langue.
  * 
- * @author Rémi Leclerc <rleclerc@Lyssal.com>
+ * @author Rémi Leclerc
  * @ORM\MappedSuperclass()
  */
 abstract class Langue implements Translatable, TranslatableInterface

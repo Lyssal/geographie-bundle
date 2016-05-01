@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Région d'un pays.
  * 
- * @author Rémi Leclerc <rleclerc@Lyssal.com>
+ * @author Rémi Leclerc
  * @ORM\MappedSuperclass
  */
 abstract class Region implements Translatable, TranslatableInterface

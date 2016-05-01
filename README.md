@@ -14,6 +14,7 @@ Les entités sont :
 * Region
 * Departement
 * Ville
+* CodePostal
 * Langue
 
 ## Utilisation
@@ -158,6 +159,23 @@ class Ville extends BaseVille
 ```php
 namespace Acme\GeographieBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Lyssal\GeographieBundle\Entity\CodePostal as BaseCodePostal;
+
+/**
+ * Code postal.
+ * 
+ * @ORM\Entity()
+ * @ORM\Table(name="acme_code_postal", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQUE_VILLE_CODE", columns={"ville_id", "code_postal_code"})})
+ */
+class CodePostal extends BaseCodePostal
+{
+    
+}
+```
+```php
+namespace Acme\GeographieBundle\Entity;
+
 use Lyssal\GeographieBundle\Entity\Langue as BaseLangue;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -179,6 +197,7 @@ Vous devez ensuite redéfinir les paramètres suivants :
 * `lyssal.geographie.entity.pays.class` : Acme\GeographieBundle\Entity\Pays
 * `lyssal.geographie.entity.region.class` : Acme\GeographieBundle\Entity\Region
 * `lyssal.geographie.entity.ville.class` : Acme\GeographieBundle\Entity\Ville
+* `lyssal.geographie.entity.code_postal.class` : Acme\GeographieBundle\Entity\CodePostal
 * `lyssal.geographie.entity.langue.class` : Acme\GeographieBundle\Entity\Langue
 
 Exemple avec sur `Acme/GeographieBundle/Resources/config/services.xml` :
@@ -188,6 +207,7 @@ Exemple avec sur `Acme/GeographieBundle/Resources/config/services.xml` :
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="lyssal.geographie.entity.ville.class">Acme\GeographieBundle\Entity\Ville</parameter>
+        <parameter key="lyssal.geographie.entity.code_postal.class">Acme\GeographieBundle\Entity\CodePostal</parameter>
         <parameter key="lyssal.geographie.entity.departement.class">Acme\GeographieBundle\Entity\Departement</parameter>
         <parameter key="lyssal.geographie.entity.region.class">Acme\GeographieBundle\Entity\Region</parameter>
         <parameter key="lyssal.geographie.entity.pays.class">Acme\GeographieBundle\Entity\Pays</parameter>
@@ -232,6 +252,7 @@ Les services sont :
 * lyssal.geographie.manager.pays
 * lyssal.geographie.manager.region
 * lyssal.geographie.manager.ville
+* lyssal.geographie.manager.code_postal
 * lyssal.geographie.manager.langue
 
 ### Exemple d'utilisation
@@ -249,6 +270,7 @@ Si vous utilisez vos propres managers héritant des managers de LyssalGeographie
 * `lyssal.geographie.manager.pays.class`
 * `lyssal.geographie.manager.region.class`
 * `lyssal.geographie.manager.ville.class`
+* `lyssal.geographie.manager.code_postal.class`
 * `lyssal.geographie.manager.langue.class`
 
 Exemple en XML d'un manager personnalisé :
@@ -267,6 +289,7 @@ Si vous souhaitez redéfinir les classes Admin, il suffit de surcharger les para
 * `lyssal.geographie.admin.pays.class`
 * `lyssal.geographie.admin.region.class`
 * `lyssal.geographie.admin.ville.class`
+* `lyssal.geographie.admin.code_postal.class`
 * `lyssal.geographie.admin.langue.class`
 
 
@@ -332,7 +355,7 @@ Le remplissage de la base concerne :
 * Tous les pays avec nom en français et anglais
 * Les régions de France avec nom en français
 * Les départements de France avec nom en français
-* Les villes de France avec nom en français
+* Les villes de France avec nom en français et codes postaux
 
 
 ### CSV
@@ -340,4 +363,3 @@ Le remplissage de la base concerne :
 Pour remplir la base de données, `LyssalGeographieBundle` utilise les CSV de sql.sh pour les pays, les départements et les villes.
 
 Ce(tte) oeuvre de [http://sql.sh](http://sql.sh) est mise à disposition selon les termes de la licence Creative Commons Attribution – Partage dans les Mêmes Conditions 4.0 International(http://creativecommons.org/licenses/by-sa/4.0/).
-

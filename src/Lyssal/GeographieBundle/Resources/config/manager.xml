@@ -2,6 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="lyssal.geographie.manager.code_postal.class">Lyssal\GeographieBundle\Manager\CodePostalManager</parameter>
         <parameter key="lyssal.geographie.manager.departement.class">Lyssal\GeographieBundle\Manager\DepartementManager</parameter>
         <parameter key="lyssal.geographie.manager.langue.class">Lyssal\GeographieBundle\Manager\LangueManager</parameter>
         <parameter key="lyssal.geographie.manager.pays.class">Lyssal\GeographieBundle\Manager\PaysManager</parameter>
@@ -10,6 +11,10 @@
     </parameters>
 
     <services>
+        <service id="lyssal.geographie.manager.code_postal" class="%lyssal.geographie.manager.code_postal.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lyssal.geographie.entity.code_postal.class%</argument>
+        </service>
         <service id="lyssal.geographie.manager.departement" class="%lyssal.geographie.manager.departement.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%lyssal.geographie.entity.departement.class%</argument>
